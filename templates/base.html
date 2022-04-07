@@ -59,6 +59,7 @@
     // Handling likes
     $(".like").click(function () {
         let postId = $(this).attr('data');
+        alert(postId);
         let el = $(this);
         let url = `/like-post/${postId}/`
         $.ajax({

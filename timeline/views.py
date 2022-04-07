@@ -1,8 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
 from timeline.models import Post, Like
 
 
@@ -29,6 +28,7 @@ def index(request):
         "likes": [like.post_id for like in Like.objects.filter(liked_by__id=request.user.id)]
     })
 
+
 @login_required
 def like_post(request, post_id):
     if Like.objects.filter(post_id=post_id, liked_by_id=request.user.id).exists():
@@ -36,3 +36,5 @@ def like_post(request, post_id):
         return JsonResponse({"message": "Post disliked", "link": "I like This"})
     Like.objects.create(post_id=post_id, liked_by_id=request.user.id)
     return JsonResponse({"message": "Post Liked!", "link": "I Dislike this"})
+
+

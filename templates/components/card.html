@@ -5,18 +5,19 @@
   <div class="card-body">
     <h5 class="card-title">{{ post.title | title }}</h5>
     <p class="card-text">{{ post.content }}</p>
-     <h5>{{ post.like_set.count }} Likes | 0 Comments</h5>
-    <!----Likes--->
-    <butoon href="#" class="btn btn-primary like" data=" {{post.id}}">Likes</butoon>
-        <!-- comments -->
-    <butoon href="#" class="btn btn-primary Comments" data="{{post.id}}">Comments</butoon><br><br>
 
-
-    {% if post.id in likes %}
+     <h5>{{ post.post_likes.count }} Likes | {{post.post_comments.count}} Comments</h5>
+      {% if post.id in likes %}
     <button href="#" class="btn btn-primary like" data="{{ post.id }}"> I Dislike this</button>
       {% else %}
     <button href="#" class="btn btn-primary like" data="{{ post.id }}"> I Like This</button>
       {% endif %}
+      <!-- comments -->
+<button href="#" class="btn btn-primary comments" data="{{ Comment.id }}"> Add New</button>
+      {% for comment in post.post_comments.all %}
+      <p>{{comment.commented_by }}--{{comment.content}}--{{comment.published_on}}</p>
+      {% endfor %}
+
   </div>
 </div>
 
