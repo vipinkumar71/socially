@@ -26,7 +26,7 @@
         <li> <a href="#" class="nav-link py-3 border-bottom"> <i class="fa fa-first-order"></i> <small>Settings</small> </a> </li>
         <li> <a href="#" class="nav-link py-3 border-bottom"> <i class="fa fa-cog"></i> <small>Connections</small> </a> </li>
     </ul>
-    <div class="dropdown border-top"> <a href="{% url 'logout' %}" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown border-top"> <a href="{% url 'timeline:logout' %}" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
         <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle"> </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
             <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -35,7 +35,7 @@
             <li>
                 <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+            <li><a class="dropdown-item" href="{% url 'timeline:logout' %}">Sign out</a></li>
         </ul>
     </div>
 </div>
@@ -59,7 +59,6 @@
     // Handling likes
     $(".like").click(function () {
         let postId = $(this).attr('data');
-        alert(postId);
         let el = $(this);
         let url = `/like-post/${postId}/`
         $.ajax({

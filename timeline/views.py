@@ -1,8 +1,13 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404
-from timeline.models import Post, Like
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.template.defaulttags import comment
+from django.views.generic import CreateView
+
+from timeline.models import Post, Like, Comment
 
 
 def login_user(request):
@@ -25,7 +30,7 @@ def logout_user(request):
 def index(request):
     return render(request, 'index.html', {
         "all_posts": Post.objects.all().order_by('id'),
-        "likes": [like.post_id for like in Like.objects.filter(liked_by__id=request.user.id)]
+        "likes": [like.post_id for like in Like.objects.filter(liked_by_id=request.user.id)]
     })
 
 
@@ -36,5 +41,18 @@ def like_post(request, post_id):
         return JsonResponse({"message": "Post disliked", "link": "I like This"})
     Like.objects.create(post_id=post_id, liked_by_id=request.user.id)
     return JsonResponse({"message": "Post Liked!", "link": "I Dislike this"})
+
+
+@login_required
+def comment_add(request, post_id):
+    post = Post.objects.get(id=post_id)
+    comment = request.POST.get('comment')
+    Comment.objects.create(
+        post_id=post_id,content=comment,commented_by_id=request.user.id,
+    )
+    return HttpResponseRedirect('/')
+
+
+
 
 

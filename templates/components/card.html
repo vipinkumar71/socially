@@ -1,23 +1,43 @@
 <div class="card">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">{{ post.title | title }}</h5>
-    <p class="card-text">{{ post.content }}</p>
+    <div class="card-header">
+        Featured
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ post.title | title }}</h5>
+        <p class="card-text">{{ post.content }}</p>
 
-     <h5>{{ post.post_likes.count }} Likes | {{post.post_comments.count}} Comments</h5>
-      {% if post.id in likes %}
-    <button href="#" class="btn btn-primary like" data="{{ post.id }}"> I Dislike this</button>
-      {% else %}
-    <button href="#" class="btn btn-primary like" data="{{ post.id }}"> I Like This</button>
-      {% endif %}
-      <!-- comments -->
-<button href="#" class="btn btn-primary comments" data="{{ Comment.id }}"> Add New</button>
-      {% for comment in post.post_comments.all %}
-      <p>{{comment.commented_by }}--{{comment.content}}--{{comment.published_on}}</p>
-      {% endfor %}
+        <h5>{{ post.post_likes.count }} Likes | {{post.post_comments.count}} Comments</h5>
+        {% if post.id in likes %}
+        <button class="btn btn-primary like" data="{{ post.id }}" href="#"> I Dislike this</button>
+        {% else %}
+        <button class="btn btn-primary like" data="{{ post.id }}" href="#"> I Like This</button>
+        {% endif %}
+        <!-- comments -->
 
-  </div>
+        <button  class="btn btn-primary comments" data="{{ Comment.id }}" href="#"> Add New</button><br>
+        <!----comment form --->
+
+        <!-- comments -->
+        <form  method="post" action="{% url 'timeline:comment_add' post.id %}">
+            {% csrf_token %}
+
+            <div>
+                <textarea name="comment"  placeholder="Write a comment"> </textarea>
+            </div>
+            <input  type="submit" >
+
+        </form>
+        <div>
+            {%if not post.post_comments.all%}
+            <P>No comments added yet...</P>
+            {%else%}
+            {% for comment in post.post_comments.all %}
+            <p><strong>{{comment.commented_by}} </strong></P>
+            <p>{{comment.content}}</p>
+            <p><small>{{comment.published_on}}</small></p>
+            {% endfor %}
+            {%endif%}
+        </div>
+    </div>
 </div>
 
